@@ -1,0 +1,14 @@
+{
+    "_id" : "Inapte",
+    "bindings" : [
+        "job\\.create\\.Inapte\\..+"
+    ]
+}
+{
+    "_id" : "Vortex",
+    "bindings" : [
+        "job\\.insert",
+        "job\\.update",
+        "workflow\\.insert"
+    ]
+}

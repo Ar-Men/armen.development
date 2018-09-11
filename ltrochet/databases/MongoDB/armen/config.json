@@ -1,0 +1,255 @@
+{
+    "_id" : "vars",
+    "vars" : {
+        "smtp" : {
+            "host" : "smtp.mailtrap.io",
+            "port" : NumberInt(2525),
+            "username" : "d57c55bfd61a9d",
+            "password" : "Nnd3SjEudGdeNWRBLSYuPh3RTmi5RubSVKB9NqIOncY="
+        },
+        "email_to" : "ltrochet@mailtrap.io"
+    }
+}
+{
+    "_id" : "resources",
+    "resources" : {
+        "mongo_database" : {
+            "auth" : {
+                "db_name" : "admin",
+                "username" : "quag",
+                "password" : "?"
+            },
+            "servers" : [
+                "mongodb-0:27017"
+            ],
+            "options" : {
+                "authMechanism" : "SCRAM-SHA-1",
+                "connectTimeoutMS" : NumberInt(5000),
+                "heartbeatFrequencyMS" : NumberInt(30000),
+                "journal" : NumberInt(0),
+                "localThresholdMS" : NumberInt(15),
+                "maxTimeMS" : NumberInt(5000),
+                "readPreference" : "primary",
+                "serverSelectionTryOnce" : NumberInt(1),
+                "socketCheckIntervalMS" : NumberInt(5000),
+                "socketTimeoutMS" : NumberInt(10000),
+                "ssl" : NumberInt(0),
+                "w" : "majority",
+                "wTimeoutMS" : NumberInt(1000)
+            }
+        },
+        "quag-0" : {
+            "server" : "quag-0",
+            "port" : NumberInt(22),
+            "users" : {
+                "ubuntu" : {
+                    "password" : "?"
+                }
+            }
+        },
+        "quag-1" : {
+            "server" : "quag-1",
+            "port" : NumberInt(22),
+            "users" : {
+                "ubuntu" : {
+                    "password" : "?"
+                }
+            }
+        }
+    }
+}
+{
+    "_id" : "components",
+    "components" : {
+        "broker" : {
+            "use" : "MongoDB",
+            "cfg" : {
+                "resource" : "mongo_database",
+                "debug" : NumberInt(1)
+            }
+        },
+        "client" : {
+            "use" : "REST"
+        },
+        "discovery" : {
+            "use" : "MongoDB",
+            "cfg" : {
+                "resource" : "mongo_database"
+            }
+        },
+        "scheduler" : {
+            "use" : "AnyEvent"
+        },
+        "server" : {
+            "use" : "Twiggy",
+            "cfg" : {
+                "debug" : NumberInt(1)
+            }
+        },
+        "sync" : {
+            "use" : "MongoDB",
+            "cfg" : {
+                "resource" : "mongo_database"
+            }
+        }
+    }
+}
+{
+    "_id" : "dcs",
+    "dcs" : {
+        "208" : {
+            "disabled" : NumberInt(0)
+        },
+        "lxc" : {
+            "disabled" : NumberInt(0)
+        }
+    }
+}
+{
+    "_id" : "nodes",
+    "nodes" : {
+        "quag~208" : {
+            "disabled" : NumberInt(0),
+            "dc" : "208"
+        },
+        "quag-0" : {
+            "disabled" : NumberInt(1),
+            "dc" : "lxc"
+        },
+        "quag-1" : {
+            "disabled" : NumberInt(1),
+            "dc" : "lxc"
+        }
+    }
+}
+{
+    "_id" : "services",
+    "services" : {
+        "Blocus" : {
+            "disabled" : NumberInt(0),
+            "port" : NumberInt(59999),
+            "deploy" : {
+                "node" : NumberInt(1)
+            }
+        },
+        "Diktat" : {
+            "disabled" : NumberInt(0),
+            "deploy" : {
+                "overall" : NumberInt(1)
+            }
+        },
+        "Inapte" : {
+            "disabled" : NumberInt(0),
+            "deploy" : {
+                "node" : NumberInt(1)
+            }
+        },
+        "Maboul" : {
+            "disabled" : NumberInt(0),
+            "deploy" : {
+                "node" : NumberInt(1)
+            },
+            "cfg" : {
+                "workers" : {
+                    "max" : NumberInt(2),
+                    "cfg" : {
+                        "max_jobs" : NumberInt(10)
+                    }
+                }
+            }
+        },
+        "Satyre" : {
+            "disabled" : NumberInt(0),
+            "deploy" : {
+                "node" : NumberInt(1)
+            },
+            "cfg" : {
+                "frequency" : NumberInt(37)
+            }
+        },
+        "Vortex" : {
+            "disabled" : NumberInt(0),
+            "deploy" : {
+                "node" : NumberInt(1)
+            },
+            "cfg" : {
+                "backend" : {
+                    "use" : "MongoDB",
+                    "cfg" : {
+                        "resource" : "mongo_database",
+                        "debug" : NumberInt(0)
+                    }
+                }
+            }
+        },
+        "Woofer" : {
+            "disabled" : NumberInt(1),
+            "port" : NumberInt(59998),
+            "deploy" : {
+                "overall" : NumberInt(1)
+            }
+        }
+    }
+}
+{
+    "_id" : "miscellaneous",
+    "debug" : NumberInt(1),
+    "stderr" : "file",
+    "stdout" : "file",
+    "logger" : [
+        {
+            "use" : "Email",
+            "cfg" : {
+                "smtp" : "{{smtp}}",
+                "email_to" : "{{email_to}}"
+            }
+        },
+        {
+            "use" : "Syslog"
+        }
+    ],
+    "smtp" : "{{smtp}}",
+    "email_to" : "{{email_to}}",
+    "heartbeat" : NumberInt(61)
+}
+{
+    "_id" : "applications",
+    "applications" : {
+        "Inapte" : {
+            "disabled" : NumberInt(0),
+            "jobs" : {
+                "Test::01" : {
+                    "max" : NumberInt(2),
+                    "group" : {
+                        "legroupe" : NumberInt(1)
+                    }
+                }
+            }
+        }
+    }
+}
+{
+    "_id" : "events",
+    "events" : {
+        "job~create~Inapte~Test::01" : {
+            "disabled" : NumberInt(1),
+            "type" : "timer",
+            "after" : NumberInt(7),
+            "repeat" : NumberInt(27),
+            "priority" : "NONE"
+        },
+        "job~create~Inapte~Test::02" : {
+            "disabled" : NumberInt(1),
+            "type" : "cron",
+            "cron" : "* * * * *",
+            "priority" : "LOW"
+        },
+        "job~create~Inapte~Test::03" : {
+            "disabled" : NumberInt(1),
+            "type" : "timer",
+            "after" : NumberInt(3),
+            "repeat" : NumberInt(0),
+            "priority" : "NONE"
+        }
+    }
+}
